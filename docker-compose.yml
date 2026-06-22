@@ -1,0 +1,25 @@
+volumes:
+  redis_data:
+  mongo_data:
+  mongo_config:
+
+services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    container_name: stability_feed_oracle_mongo
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    ports:
+      - "0.0.0.0:27017:27017"
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    container_name: stability_feed_oracle_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "0.0.0.0:6379:6379"
